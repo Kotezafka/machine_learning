@@ -23,7 +23,7 @@ import pandas as pd
 
 
 # Выбрали датасет с сайта Kaggle и загрузили данные из csv-файла
-df = pd.read_csv("./Worlds_Best_50_Hotels.csv", encoding="latin-1")
+df = pd.read_csv("./module_1/hw_2/Worlds_Best_50_Hotels.csv", encoding="latin-1")
 print(f"{df.to_string()}\n")
 
 # Изучите выбранный набор данных

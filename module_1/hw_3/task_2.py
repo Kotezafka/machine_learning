@@ -16,7 +16,7 @@
 import pandas as pd
 
 
-data = pd.read_csv("./police.csv", sep=",")
+data = pd.read_csv("./module_1/hw_3/police.csv", sep=",")
 print(
     f"Датасет Pandas practices, который содержит данные об автомобилях, остановленных полицией:\n{data.head().to_string()}\n"
 )

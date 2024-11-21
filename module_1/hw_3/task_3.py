@@ -9,7 +9,7 @@
 import pandas as pd
 
 
-police = pd.read_csv("./police.csv", sep=",")
+police = pd.read_csv("./module_1/hw_3/police.csv", sep=",")
 
 column_to_drop = police.isnull().sum().idxmax()
 print(column_to_drop)

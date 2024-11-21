@@ -39,7 +39,7 @@ import re
 
 
 # 1. Загрузите данные из csv-файла и преобразуйте в объект DataFrame
-df = pd.read_csv("./full_netflix.csv", sep=",")
+df = pd.read_csv("./module_1/hw_3/full_netflix.csv", sep=",")
 print(f"Объект DataFrame:\n{df.head(15).to_string()}\n\n")
 
 
