@@ -1,4 +1,4 @@
-''' Задача 1
+"""Задача 1
 Построение дашборда
 
 Для выполнения задания вам понадобится набор данных. Мы предлагаем
@@ -63,7 +63,7 @@
 - Цель дашборда: обеспечить пользователю среду для формирования мыслей по данным
 
 - В задании предполагается, что в идеале дашборд может помочь вам
-    самим самостоятельно увидеть интересные особенности в данных'''
+    самим самостоятельно увидеть интересные особенности в данных"""
 
 
 # import pandas as pd
@@ -98,7 +98,6 @@
 # )
 # print(chart)
 
-
 import pandas as pd
 import altair as alt
 
@@ -110,35 +109,37 @@ print(f"Объект DataFrame:\n{df.head(15).to_string()}\n\n")
 
 # Создание словарей для замены кодов на названия (предполагается, что есть файл с кодами и названиями)
 # 1. ТН ВЭД
-#tn_ved = pd.read_csv("tn_ved.csv", sep=";")
-#code_to_name = dict(zip(tn_ved["code"], tn_ved["name"]))
+# tn_ved = pd.read_csv("tn_ved.csv", sep=";")
+# code_to_name = dict(zip(tn_ved["code"], tn_ved["name"]))
 
 # 2. Страны
-#countries = pd.read_csv("countries.csv", sep=";")
-#code_to_country = dict(zip(countries["code"], countries["name"]))
+# countries = pd.read_csv("countries.csv", sep=";")
+# code_to_country = dict(zip(countries["code"], countries["name"]))
 
 # 3. Регионы и районы
-#regions = pd.read_csv("regions.csv", sep=";")
-#code_to_region = dict(zip(regions["code"], regions["name"]))
+# regions = pd.read_csv("regions.csv", sep=";")
+# code_to_region = dict(zip(regions["code"], regions["name"]))
 
-#districts = pd.read_csv("districts.csv", sep=";")
-#code_to_district = dict(zip(districts["code"], districts["name"]))
+# districts = pd.read_csv("districts.csv", sep=";")
+# code_to_district = dict(zip(districts["code"], districts["name"]))
 
 
 # Замена кодов на названия
-#df["code"] = df["code"].map(code_to_name)
-#df["country"] = df["country"].map(code_to_country)
-#df["region"] = df["region"].map(code_to_region)
-#df["district"] = df["district"].map(code_to_district)
+# df["code"] = df["code"].map(code_to_name)
+# df["country"] = df["country"].map(code_to_country)
+# df["region"] = df["region"].map(code_to_region)
+# df["district"] = df["district"].map(code_to_district)
 
 
 # Сохранение обработанного датасета
-#df.to_csv("processed_dataset.csv", sep=";", index=False)
+# df.to_csv("processed_dataset.csv", sep=";", index=False)
 
 
 # Предобработка данных
 df["year"] = pd.to_datetime(df["year"], format="%Y")
-print(f'Преобразованное поле в формат datetime для удобства использования в Altair:\n{df["year"]}\n\n')
+print(
+    f'Преобразованное поле в формат datetime для удобства использования в Altair:\n{df["year"]}\n\n'
+)
 
 df["total_students"] = df["e1"] + df["e2"] + df["e3"] + df["e4"] + df["e5"] + df["e6"]
 print(f'Сумма значений полей e1, e2, e3, e4, e5, e6:\n{df["total_students"]}\n\n')
@@ -154,26 +155,41 @@ year_selection = alt.selection_point(bind=year_filter, fields=["year"], clear=Fa
 df_sample = df.sample(frac=0.1)
 
 # Создание диаграмм
-chart_students = alt.Chart(df_sample).mark_bar().encode(
-    alt.X("year:T", title="Год"),
-    alt.Y("total_students:Q", title="Количество студентов"),
-    color="federal_district_short:N",
-    tooltip=["name", "year", "rnd_efficiency", "federal_district", "region_name"],
-).add_params(year_selection).transform_filter(str(year_selection))
+chart_students = (
+    alt.Chart(df_sample)
+    .mark_bar()
+    .encode(
+        alt.X("year:T", title="Год"),
+        alt.Y("total_students:Q", title="Количество студентов"),
+        color="federal_district_short:N",
+        tooltip=["name", "year", "rnd_efficiency", "federal_district", "region_name"],
+    )
+    .add_params(year_selection)
+    .transform_filter(str(year_selection))
+)
 
-chart_efficiency = alt.Chart(df_sample).mark_point().encode(
-    alt.X("year:T", title="Год"),
-    alt.Y("rnd_efficiency:Q", title="Эффективность НИОКР"),
-    color="federal_district_short:N",
-    tooltip=["name", "year", "rnd_efficiency", "federal_district", "region_name"],
-).add_params(year_selection).transform_filter(str(year_selection))
+chart_efficiency = (
+    alt.Chart(df_sample)
+    .mark_point()
+    .encode(
+        alt.X("year:T", title="Год"),
+        alt.Y("rnd_efficiency:Q", title="Эффективность НИОКР"),
+        color="federal_district_short:N",
+        tooltip=["name", "year", "rnd_efficiency", "federal_district", "region_name"],
+    )
+    .add_params(year_selection)
+    .transform_filter(str(year_selection))
+)
 
 
 # Композиция дашборда
-t = alt.vconcat(
-    chart_students,
-    chart_efficiency
-).configure_axis(labelFontSize=12, titleFontSize=14).configure_title(fontSize=18).configure_legend(labelFontSize=12, titleFontSize=14).configure_view(strokeWidth=0)
+t = (
+    alt.vconcat(chart_students, chart_efficiency)
+    .configure_axis(labelFontSize=12, titleFontSize=14)
+    .configure_title(fontSize=18)
+    .configure_legend(labelFontSize=12, titleFontSize=14)
+    .configure_view(strokeWidth=0)
+)
 
 
 alt.Chart.save(t, "my_dashboard.json", ppi=200)

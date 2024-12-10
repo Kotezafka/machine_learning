@@ -58,7 +58,7 @@ facets = hull.simplices
 print(f"Массив описывает грани:\n{facets}\n\n")
 
 # Создаем объект cylinder_mesh типа mesh.Mesh с нулевым массивом данных (заполняем его в цикле)
-#cylinder_mesh = mesh.Mesh(np.zeros(facets.shape[0], dtype=mesh.Mesh.dtype))
+# cylinder_mesh = mesh.Mesh(np.zeros(facets.shape[0], dtype=mesh.Mesh.dtype))
 cylinder_mesh = stl_mesh.Mesh(np.zeros(facets.shape[0], dtype=stl_mesh.Mesh.dtype))
 for i, f in enumerate(facets):
     for j in range(3):
